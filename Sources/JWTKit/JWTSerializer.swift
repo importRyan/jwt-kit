@@ -40,8 +40,9 @@ struct JWTSerializer {
     }
 }
 
-struct FlexibleJWTSerializer {
-  func sign<Payload>(
+public struct FlexibleJWTSerializer {
+  public init() { }
+  public func sign<Payload>(
     _ payload: Payload,
     using signer: JWTSigner,
     typ: String = "JWT",
