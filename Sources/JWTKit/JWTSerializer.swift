@@ -45,8 +45,7 @@ public struct FlexibleJWTSerializer {
   public func sign<Payload>(
     _ payload: Payload,
     using signer: JWTSigner,
-    typ: String = "JWT",
-    kid: JWKIdentifier,
+    kid: JWKIdentifier? = nil,
     customHeader: [String:String] = [:]
   ) throws -> String
   where Payload: JWTPayload
@@ -57,8 +56,9 @@ public struct FlexibleJWTSerializer {
     // encode header, copying header struct to mutate alg
     var header = customHeader
     header["alg"] = signer.algorithm.name
-    header["kid"] = kid.string
-    header["typ"] = typ
+    if let kid = kid {
+      header["kid"] = kid.string
+    }
 
     let headerData = try jsonEncoder.encode(header)
     let encodedHeader = headerData.base64URLEncodedBytes()
